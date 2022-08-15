@@ -54,11 +54,27 @@ public class LoginServlet extends HttpServlet {
 				out.println ("</head>");
 				out.println ("<body>");
 				out.println ("<h1>Hello World!</h1>");
+				out.println ("<h2>My name is Bob! Nice to meet you :)</h2>");
 				out.println ("</body>");
 				out.println ("</html>");
 				out.close();
 			}
-			else { System.out.println("login failure");
+			else {
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				
+				out.println ("<html>");
+				out.println ("<head>");
+				out.println ("<title>Response from LoginServlet</title>");
+				out.println ("</head>");
+				out.println ("<body>");
+				out.println ("<h1>Your Username and Password does not match!</h1>");
+				out.println ("<h2>Please try again...</h2>");
+				out.println ("</body>");
+				out.println ("</html>");
+				out.close();
+				
+				System.out.println("login failure");
 			}
 		}
 	}
