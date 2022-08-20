@@ -11,6 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LoginServlet
  */
+
+/**
+ * 
+ * @author thamxunhong
+ *  
+ * 2022-08-20: 
+ *   If you git pull the project, and you face an issue where 
+ *   "the import javax.servlet.http cannot be resolved", perform the following:
+ *   
+ *   - manually build the project (Configure Build Path)
+ *   - go to Libraries --> Classpath --> External Jars 
+ *   - add servlet-api.jar
+ * 
+ *   https://stackoverflow.com/questions/4119448/the-import-javax-servlet-cant-be-resolved
+ *  
+ */
+
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
