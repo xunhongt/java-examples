@@ -2,43 +2,25 @@ package servlets;
 
 import java.io.*;
 import java.io.IOException;
-import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.*;
+import java.util.Date;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class MainScreenServlet
  */
-
-/**
- * 
- * @author thamxunhong
- *  
- * 2022-08-20: 
- *   If you git pull the project, and you face an issue where 
- *   "the import javax.servlet.http cannot be resolved", perform the following:
- *   
- *   - manually build the project (Configure Build Path)
- *   - go to Libraries --> Classpath --> External Jars 
- *   - add servlet-api.jar
- * 
- *   https://stackoverflow.com/questions/4119448/the-import-javax-servlet-cant-be-resolved
- *  
- */
-
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/MainScreenServlet")
+public class MainScreenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public MainScreenServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,30 +28,20 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    
-    /*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-	*/
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	throws ServletException, IOException {
-		
-		//HTTPSession
 		HttpSession session = request.getSession(true);
 		
-		response.setContentType("text/html");		
+		//HTTPResponse
+		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
-		//Referer-Identify the referer
-		String referer = request.getHeader("referer");
-		
+	
 			// TODO Auto-generated method stub
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
-		
+	
 		
 		if (id != "" && password != "" ){
 			try {
@@ -80,19 +52,38 @@ public class LoginServlet extends HttpServlet {
 				
 				if (status) {
 					
-					//store the user id value into session
-					session.setAttribute("id", id);
-					request.getRequestDispatcher("MainScreenServlet").include(request,response);
-				} else {
-					response.sendRedirect(referer);
-				}
+					//retrieve user id from session and display
+					out.println("<HTML><BODY>" +
+							"<H1 ALIGN=\"CENTER\"> Session Info </H1>" +
+							"<TABLE BORDER=1 ALIGN=\"CENTER\">" +
+							"<TR>" +
+							"<TH>Info Type<TH>Value" +
+							"<TR>" +
+							" <TD>Session ID (MainScreenServlet)" +
+							" <TD>" + session.getId() +
+							"<TR>" +
+							" <TD>Creation Time" +
+							" <TD>" + new Date(session.getCreationTime()) +
+							"<TR>" +
+							" <TD>Time of Last Access" +
+							" <TD>" + new Date(session.getLastAccessedTime()) +
+							"<TR>" +
+							" <TD>User Id" +
+							" <TD>" + session.getAttribute("id") +
+							"</TR>"+
+							"</TABLE>" +
+							"</BODY></HTML>");
+					out.close();
+				} 
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
 		} 
+		
+
 
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
