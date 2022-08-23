@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.*;
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,23 +12,6 @@ import javax.servlet.http.*;
 /**
  * Servlet implementation class LoginServlet
  */
-
-/**
- * 
- * @author thamxunhong
- *  
- * 2022-08-20: 
- *   If you git pull the project, and you face an issue where 
- *   "the import javax.servlet.http cannot be resolved", perform the following:
- *   
- *   - manually build the project (Configure Build Path)
- *   - go to Libraries --> Classpath --> External Jars 
- *   - add servlet-api.jar
- * 
- *   https://stackoverflow.com/questions/4119448/the-import-javax-servlet-cant-be-resolved
- *  
- */
-
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -45,50 +27,65 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    
-    /*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-	*/
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	throws ServletException, IOException {
 		
-		//HTTPSession
 		HttpSession session = request.getSession(true);
 		
-		response.setContentType("text/html");		
+		//HTTPResponse
+		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
 		
 		//Referer-Identify the referer
 		String referer = request.getHeader("referer");
+
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		
 		
 		if (id != "" && password != "" ){
+
 			try {
 				//AccountDBAO db = new AccountDBAO();
-				//call DAO to verify login and password with DB in later practical
-				boolean status = true;
+				boolean status = true ;
 				
 				if (status) {
-					//store the user id value into session
+				//store the user id value into session
 					session.setAttribute("id", id);
+					
 					request.getRequestDispatcher("MainScreenServlet").forward(request,response);
 					
-				} else {
-			        response.sendRedirect(referer);  
-				}
+					/*
+					 * Difference between forward() and include(): 
+					 *   - forward() will CLOSE the output stream after it has been invoked 
+					 *   - include() will leave the output stream open 
+					 *   
+					 *   e.g. if you call forward(), it will NOT print HELLO WORLD. But if you call include(), it will 
+					 *   print HELLO WORLD
+					 *   
+					 *   - include() is used to load contents of specific resource directly into servlet's response
+					 *     e.g. servlet, JSP, static resource
+					 *   - forward() is used for server-side redirection
+					 *     e.g. HTTP request for one servlet is routed to another resource. 
+					 */
+					
+					out.println("<h1>HELLO WORLD</h1>");
+					out.close();
+					
+				} 
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-		} 
-
+		}else { 
+			response.sendRedirect(request.getContextPath() + "/loginFail.jsp");
+			
+			/* 
+			 * In order to call a JSP file from a servlet, remember to call request.getContextPath() 
+			 */
+		}
+			
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

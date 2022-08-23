@@ -1,16 +1,11 @@
 package servlets;
 
 import java.io.*;
-import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.*;
 import java.util.Date;
-
 /**
  * Servlet implementation class MainScreenServlet
  */
@@ -31,42 +26,37 @@ public class MainScreenServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		//HTTPResponse
 		HttpSession session = request.getSession(false);
 		
-		//HTTPResponse
+		/* 
+		 * request.getSession(false) will return current session if current session exists. If not, it will not create
+		 * a new session.
+		*/
+		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-	
-		try {
-			//AccountDBAO db = new AccountDBAO();
-			//call DAO to verify login and password with DB in later practical
-			
-			out.println("<HTML><BODY>" +
-					"<H1 ALIGN=\"CENTER\"> Session Info </H1>" +
-					"<TABLE BORDER=1 ALIGN=\"CENTER\">" +
-					"<TR>" +
-					"<TH>Info Type<TH>Value" +
-					"<TR>" +
-					" <TD>Session ID (MainScreenServlet)" +
-					" <TD>" + session.getId() +
-					"<TR>" +
-					" <TD>Creation Time" +
-					" <TD>" + new Date(session.getCreationTime()) +
-					"<TR>" +
-					" <TD>Time of Last Access" +
-					" <TD>" + new Date(session.getLastAccessedTime()) +
-					"<TR>" +
-					" <TD>User Id" +
-					" <TD>" + session.getAttribute("id") +
-					"</TR>"+
-					"</TABLE>" +
-					"</BODY></HTML>");
-			out.close();
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		out.println("<HTML><BODY>" +
+				"<H1 ALIGN=\"CENTER\"> Session Info </H1>" +
+				"<TABLE BORDER=1 ALIGN=\"CENTER\">" +
+				"<TR>" +
+				"<TH>Info Type<TH>Value" +
+				"<TR>" +
+				" <TD>Session ID (MainScreenServlet)" +
+				" <TD>" + session.getId() +
+				"<TR>" +
+				" <TD>Creation Time" +
+				" <TD>" + new Date(session.getCreationTime()) +
+				"<TR>" +
+				" <TD>Time of Last Access" +
+				" <TD>" + new Date(session.getLastAccessedTime()) +
+				"<TR>" +
+				" <TD>User Id" +
+				" <TD>" + session.getAttribute("id") +
+				"</TR>"+
+				"</TABLE>" +
+				"</BODY></HTML>");	
 	}
 
 	/**
