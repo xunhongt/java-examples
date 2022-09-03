@@ -1,0 +1,13 @@
+#CREATE DATABASE IF NOT EXISTS test;
+#USE test;
+
+#CREATE TABLE ACCOUNTS(
+#	id VARCHAR(45) NOT NULL,
+#    password VARCHAR(45) NOT NULL,
+#    PRIMARY KEY (id)
+#    );
+
+INSERT INTO ACCOUNTS VALUES(
+	'bob', 
+    'P@ssw0rd123'
+    );

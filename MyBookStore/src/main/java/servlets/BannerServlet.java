@@ -56,8 +56,8 @@ public class BannerServlet extends HttpServlet {
             "<hr> <br> &nbsp;" + "<h1>" +
             "<font size=\"+3\" color=\"#CC0066\">Duke's </font> <img src=\"" +
             request.getContextPath() +
-            "/duke.books.gif\" alt=\"Duke holding books\"\">" +
-            "<font size=\"+3\" color=\"black\">Bookstore</font>" + "</h1>" +
+            "/bob-the-builder.gif\" alt=\"Duke holding books\"\">" +
+            "<font size=\"+3\" color=\"black\"> Bookstore</font>" + "</h1>" +
             "</center>" + "<br> &nbsp; <hr> <br> ");
     }
 }
