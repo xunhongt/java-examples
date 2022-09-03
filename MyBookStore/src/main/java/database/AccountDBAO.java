@@ -35,6 +35,12 @@ import java.util.*;
 import exception.*;
 import cart.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
+import java.util.Base64;
+
 // The instance of BookDBAO gets created when the application
 // is deployed. It maintains the Connection object to the
 // database. The Connection object is created from DataSource
@@ -104,21 +110,29 @@ public class AccountDBAO {
         notify();
     }
     
+    //Updated to resolve hashed password from Database
     
-    public boolean authenticate(String id, String password) {
+    public boolean authenticate(String id, String password) throws NoSuchAlgorithmException {
     	boolean status = false;
         try {
-            String selectStatement = "select * " + "from accounts where id = ? and password = ?";
+            //String selectStatement = "select * " + "from accounts where id = ? and password = ?";
+        	String selectStatement = "select * from accounts where id = ?";
             getConnection();
             
             PreparedStatement prepStmt = con.prepareStatement(selectStatement);
             prepStmt.setString(1, id);
-            prepStmt.setString(2, password);
+            //prepStmt.setString(2, password);
             
             ResultSet rs = prepStmt.executeQuery();
             
             if (rs.next()) {
-            	status = true;
+            	//status = true;
+              	String hashPasswordDB = rs.getString("password");
+              	String saltDB = rs.getString("salt");
+              	
+               	 if (hashPasswordDB.equals(hashPassword(password + saltDB))) {
+               		status = true;  
+               	 }   	 
                 
             } 
             
@@ -132,5 +146,70 @@ public class AccountDBAO {
         return status;
     }
     
+    //Methods to Create a new Account (with Password Hashed Salted) and insert into DB
+    
+    public boolean create(String id, String password)throws NoSuchAlgorithmException  {
+    	boolean status = false;
+        try {
+        	
+        	//String passwordHashedSalted = hashAndSaltPassword(password);
+        	
+          	String salt = getSalt();
+          	String passwordHashedSalted = hashPassword(password + salt);
+        	
+            String sqlStatement = "insert into accounts(id,password, salt) values (?,?,?);";  
+            getConnection();
+            
+            PreparedStatement prepStmt = con.prepareStatement(sqlStatement);
+            prepStmt.setString(1, id);
+            prepStmt.setString(2, passwordHashedSalted);
+            prepStmt.setString(3, salt);
+            
+            int x = prepStmt.executeUpdate();
+            
+            if (x == 1) {
+            	status = true;       
+            } 
+            
+            prepStmt.close();
+            releaseConnection();
+           
+        } catch (SQLException ex) {
+            releaseConnection();
+            ex.printStackTrace();
+        }
+        return status;
+    }
+    
+    public static String hashAndSaltPassword(String password)
+          	 throws NoSuchAlgorithmException {
+          	 String salt = getSalt();
+          	 return hashPassword(password + salt);
+       }
 
+    public static String getSalt() {
+		 Random r = new SecureRandom();
+		 byte[] saltBytes = new byte[32];
+		 r.nextBytes(saltBytes);
+		 return Base64.getEncoder().encodeToString(saltBytes);
+	}
+    
+    public static String hashPassword(String password)
+ 		   throws NoSuchAlgorithmException {
+ 		 	MessageDigest md = MessageDigest.getInstance("SHA-256");
+ 		 	md.reset();
+ 		 	md.update(password.getBytes());
+ 		 	byte[] mdArray = md.digest();
+ 		 	StringBuilder sb = new StringBuilder(mdArray.length * 2);
+ 		 	for (byte b : mdArray) {
+ 		 		int v = b & 0xff;
+ 		 		if (v < 16) {
+ 		 			sb.append('0');
+ 		 		}
+
+ 				sb.append(Integer.toHexString(v));
+ 		 	}
+ 		 	return sb.toString();
+ }
+    
 }
