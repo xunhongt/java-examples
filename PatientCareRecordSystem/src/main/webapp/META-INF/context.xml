@@ -1,0 +1,7 @@
+<Context>
+
+<Resource name="jdbc/myschema" auth="Container"
+          type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://ntuproject.mysql.database.azure.com:3306/myschema?useSSL=true"
+          username="ntuadmin" password="password@123" maxActive="20" maxIdle="10" maxWait="10000"/>
+</Context>
