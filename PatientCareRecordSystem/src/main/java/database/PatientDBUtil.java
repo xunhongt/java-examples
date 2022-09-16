@@ -34,7 +34,7 @@ public class PatientDBUtil {
 			myConn = dataSource.getConnection();
 			
 			//2. Create a SQL Statement
-			String sql = "select * from patients";
+			String sql = "select * from patients order by nric DESC";
 			myStatement = myConn.createStatement();
 			
 			//3. Execute a Query

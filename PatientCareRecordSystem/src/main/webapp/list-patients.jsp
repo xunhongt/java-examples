@@ -47,8 +47,7 @@
 					<th>Height (M)</th>	
 					<th>Weight (KG)</th>	
 					<th>Address</th>	
-					<th>Blood Group</th>
-					<th>Action</th>																													
+					<th>Blood Group</th>																												
 				</tr>
 					<% for (Patient tempPatient : thePatients) { %>				
 				<tr>
