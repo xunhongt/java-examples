@@ -45,7 +45,12 @@
 				</tr>
 		
 				<c:forEach var="tempPatient" items="${PATIENT_LIST}">
-					
+				
+					<!-- Set an Action Link for each patient -->	
+					<c:url var="updateLink" value="PatientControllerServlet">
+						<c:param name="command" value="UPDATE" />
+						<c:param name="patientId" value="${tempPatient.nric}" />
+					</c:url>
 					<tr>	
 						<td>${tempPatient.nric}</td>
 						<td>${tempPatient.name}</td>
@@ -55,6 +60,7 @@
 						<td>${tempPatient.weight}</td>
 						<td>${tempPatient.address}</td>
 						<td>${tempPatient.bloodGroup}</td>
+						<td><a href="${updateLink}">Update</a></td>						
 					</tr>
 					
 				</c:forEach>																										
