@@ -13,7 +13,9 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/admin/Desktop/Bob/runtime/apache-tomcat-9.0.62/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="C:/Users/admin/Desktop/Bob/runtime/apache-tomcat-9.0.62/lib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="C:/Runtime/apache-tomcat-9.0.65/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Runtime/apache-tomcat-9.0.65/lib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-1.2.6.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-1.2.7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

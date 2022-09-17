@@ -107,7 +107,7 @@ public class PatientControllerServlet extends HttpServlet {
 				break;
 				
 			case "UPDATE":
-				loadPatient(request,response);
+				updatePatient(request,response);
 				break;
 				
 			default:
@@ -179,7 +179,7 @@ public class PatientControllerServlet extends HttpServlet {
 
 	}
 	
-	//updatePatients --> Load Patient in a JSP file, and update the details
+	//loadPatients --> Load Patient in a JSP file, allowing users to update details
 	private void loadPatient(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		// Read Patient ID into Form Data
@@ -195,6 +195,41 @@ public class PatientControllerServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/update-patient-form.jsp");
 		dispatcher.forward(request, response);
 		
+	}
+	
+	//updatePatients --> Update Patient details in the Database
+	private void updatePatient(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// Read patient info from form data
+		String nric = request.getParameter("nric");
+		String name = request.getParameter("name");
+		String address = request.getParameter("address");
+		
+		String tempDOB = request.getParameter("dateOfBirth");
+		Date dateOfBirth = new SimpleDateFormat("yyyy-mm-dd").parse(tempDOB);
+		
+		String patientDrugAllergyId = null;
+		
+		String tempGender = request.getParameter("gender");
+		char gender = tempGender.charAt(0);
+		
+		String tempHeight = request.getParameter("height");
+		Float height = Float.parseFloat(tempHeight);
+		
+		String tempWeight = request.getParameter("weight");
+		Float weight = Float.parseFloat(tempWeight);
+		
+		String bloodGroup = request.getParameter("bloodGroup");		
+		
+		// create a new patient object
+		Patient thePatient = new Patient(nric, name, patientDrugAllergyId, address, 
+				dateOfBirth, gender, height, weight, bloodGroup);
+		
+		// perform update on database
+		patientDbUtil.updatePatient(thePatient);
+		
+		// send them back to the "list patients" page
+		listPatients(request,response);
 	}
 
 }

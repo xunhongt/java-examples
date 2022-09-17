@@ -78,50 +78,6 @@ public class PatientDBUtil {
 		}
 	}
 
-
-	//Method to Add Patient into Database
-	public void addPatient(Patient thePatient) throws Exception{
-
-		Connection myConn = null;
-		PreparedStatement myStatement = null;
-		
-		try {
-			//Create SQL for insert
-			myConn = dataSource.getConnection();
-			
-			//Set Parameter Values for the Patient
-			
-			/*
-			 * SQL String is created using the PreparedStatement format (Feature used to execute the same SQL statement
-			 * repeatedly with high efficiency)
-			 * 
-			 * Certain values are left unspecified, called parameters (labeled '?')
-			 */
-			String sql = "INSERT INTO patients " + "(nric, name, patientDrugAllergyId, address, "
-					+ "gender, dateofBirth, height, weight, bloodGroup)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			
-			myStatement = myConn.prepareStatement(sql);
-			
-			myStatement.setString(1, thePatient.getNric());
-			myStatement.setString(2, thePatient.getName());
-			myStatement.setString(3, thePatient.getPatientDrugAllergyId());
-			myStatement.setString(4, thePatient.getAddress());
-			myStatement.setString(5, String.valueOf(thePatient.getGender()));
-			myStatement.setDate(6,  new java.sql.Date(thePatient.getDateOfBirth().getTime()));
-			myStatement.setFloat(7, thePatient.getHeight());
-			myStatement.setFloat(8, thePatient.getWeight());
-			myStatement.setString(9, thePatient.getBloodGroup());		
-			
-			//Execute SQL Insert
-			myStatement.execute();
-
-		}finally {
-			//Clean Up JDBC Objects
-			close(myConn, myStatement, null);
-		}
-
-	}
-
 	//Method to Get Patient from Database
 	public Patient getPatient(String thePatientId) throws Exception {
 
@@ -182,6 +138,95 @@ public class PatientDBUtil {
 			//Clean Up JDBC Objects
 			close(myConn, myStatement, myRs);
 		}
+	}	
+	
+
+	//Method to Add Patient into Database
+	public void addPatient(Patient thePatient) throws Exception{
+
+		Connection myConn = null;
+		PreparedStatement myStatement = null;
+		
+		try {
+			//Create SQL for insert
+			myConn = dataSource.getConnection();
+			
+			//Set Parameter Values for the Patient
+			
+			/*
+			 * SQL String is created using the PreparedStatement format (Feature used to execute the same SQL statement
+			 * repeatedly with high efficiency)
+			 * 
+			 * Certain values are left unspecified, called parameters (labeled '?')
+			 */
+			String sql = "INSERT INTO patients " + "(nric, name, patientDrugAllergyId, address, "
+					+ "gender, dateofBirth, height, weight, bloodGroup)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			
+			myStatement = myConn.prepareStatement(sql);
+			
+			myStatement.setString(1, thePatient.getNric());
+			myStatement.setString(2, thePatient.getName());
+			myStatement.setString(3, thePatient.getPatientDrugAllergyId());
+			myStatement.setString(4, thePatient.getAddress());
+			myStatement.setString(5, String.valueOf(thePatient.getGender()));
+			myStatement.setDate(6,  new java.sql.Date(thePatient.getDateOfBirth().getTime()));
+			myStatement.setFloat(7, thePatient.getHeight());
+			myStatement.setFloat(8, thePatient.getWeight());
+			myStatement.setString(9, thePatient.getBloodGroup());		
+			
+			//Execute SQL Insert
+			myStatement.execute();
+
+		}finally {
+			//Clean Up JDBC Objects
+			close(myConn, myStatement, null);
+		}
+
+	}
+	
+	//Method to Get Patient from Database
+	public void updatePatient(Patient thePatient) throws Exception{
+		
+		Connection myConn = null;
+		PreparedStatement myStatement = null;
+		
+		try {
+			// GET DATABASE connection
+			myConn = dataSource.getConnection();
+			
+			// Create SQL update statement
+			String sql = "UPDATE patients "
+					+ "SET name=?, patientDrugAllergyId=?, address=?, gender=?, dateOfBirth=?, height=?, "
+					+ "weight=?, bloodGroup=? "
+					+ "WHERE nric=?";
+			
+			// Prepare the statement
+			myStatement = myConn.prepareStatement(sql);
+			
+			// Set parameters for the statement 
+			
+
+			myStatement.setString(1, thePatient.getName());
+			myStatement.setString(2, thePatient.getPatientDrugAllergyId());
+			myStatement.setString(3, thePatient.getAddress());
+			myStatement.setString(4, String.valueOf(thePatient.getGender()));
+			myStatement.setDate(5,  new java.sql.Date(thePatient.getDateOfBirth().getTime()));
+			myStatement.setFloat(6, thePatient.getHeight());
+			myStatement.setFloat(7, thePatient.getWeight());
+			myStatement.setString(8, thePatient.getBloodGroup());	
+			myStatement.setString(9, thePatient.getNric());
+			
+			// Execute SQL Statement 
+			myStatement.execute();
+			
+		} finally {
+			// Close Connection 
+			//Clean Up JDBC Objects
+			close(myConn, myStatement, null);
+		}
+
+		
+
 	}
 	
 	//Method to Close Connection
