@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class PatientDBUtil {
 			myConn = dataSource.getConnection();
 			
 			//2. Create a SQL Statement
-			String sql = "select * from patients order by nric DESC";
+			String sql = "SELECT * FROM patients ORDER BY nric DESC";
 			myStatement = myConn.createStatement();
 			
 			//3. Execute a Query
@@ -96,12 +97,10 @@ public class PatientDBUtil {
 			 * 
 			 * Certain values are left unspecified, called parameters (labeled '?')
 			 */
-			String sql = "insert into patients " + "(nric, name, patientDrugAllergyId, address, "
-					+ "gender, dateofBirth, height, weight, bloodGroup)" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO patients " + "(nric, name, patientDrugAllergyId, address, "
+					+ "gender, dateofBirth, height, weight, bloodGroup)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			myStatement = myConn.prepareStatement(sql);
-			
-			
 			
 			myStatement.setString(1, thePatient.getNric());
 			myStatement.setString(2, thePatient.getName());
@@ -123,6 +122,68 @@ public class PatientDBUtil {
 
 	}
 
+	//Method to Get Patient from Database
+	public Patient getPatient(String thePatientId) throws Exception {
+
+		Patient thePatient = null;
+
+		Connection myConn = null;
+		PreparedStatement myStatement = null;
+		ResultSet myRs = null;
+		
+		try {
+			// Get Connection from Database
+			myConn = dataSource.getConnection();
+			
+			// Create SQL to get selected patient
+			String sql = "SELECT * FROM patients WHERE nric=?";
+			
+			// Create Prepared Statement 
+			myStatement = myConn.prepareStatement(sql);
+			
+			// Set Parameters
+			myStatement.setString(1, thePatientId);
+			
+			// Execute Statement
+			myRs = myStatement.executeQuery();
+			
+			// Retrieve data from result set row
+			if (myRs.next()) {
+				// Retrieve data from Result Set Row
+				String nric = myRs.getString("nric");
+				String name = myRs.getString("name");
+				String patientDrugAllergyId = myRs.getString("patientDrugAllergyId");
+				String address = myRs.getString("address");
+				Date dateOfBirth = myRs.getDate("dateOfBirth");
+				char gender = myRs.getString("gender").charAt(0);
+				/*
+				 * if (genderCode.toLower() = 'M') {
+				 * 		String gender = "Male"
+				 * } elseif (genderCode.toLower() = 'F') {
+				 * 		String gender = "Male"
+				 * } 
+				 */
+				float height = myRs.getFloat("height");
+				float weight = myRs.getFloat("weight");
+				String bloodGroup = myRs.getString("bloodGroup");					
+				
+				// Create new Patient Object
+				
+				thePatient = new Patient(thePatientId, name, patientDrugAllergyId, address, 
+						dateOfBirth, gender, height, weight, bloodGroup);
+			}
+			else {
+				throw new Exception("Cannot find Patient ID: " + thePatientId);
+			}
+			
+			return thePatient;
+			
+		}finally {
+			//Clean Up JDBC Objects
+			close(myConn, myStatement, myRs);
+		}
+	}
+	
 	//Method to Close Connection
 	private void close(Connection myConn, Statement myStatement, ResultSet myRs) {
 		try {

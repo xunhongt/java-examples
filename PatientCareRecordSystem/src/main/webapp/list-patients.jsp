@@ -48,7 +48,7 @@
 				
 					<!-- Set an Action Link for each patient -->	
 					<c:url var="updateLink" value="PatientControllerServlet">
-						<c:param name="command" value="UPDATE" />
+						<c:param name="command" value="LOAD" />
 						<c:param name="patientId" value="${tempPatient.nric}" />
 					</c:url>
 					<tr>	
@@ -60,6 +60,7 @@
 						<td>${tempPatient.weight}</td>
 						<td>${tempPatient.address}</td>
 						<td>${tempPatient.bloodGroup}</td>
+				
 						<td><a href="${updateLink}">Update</a></td>						
 					</tr>
 					

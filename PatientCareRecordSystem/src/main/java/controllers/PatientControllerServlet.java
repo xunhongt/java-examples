@@ -59,8 +59,29 @@ public class PatientControllerServlet extends HttpServlet {
 		// List Patients in MVC Fashion
 		//Helper Method --> List Patients 
 		try {
-			listPatients(request, response);
-		} catch (Exception exc) {
+			// Read the Command parameter
+			String theCommand = request.getParameter("command");
+			
+			// If the command is missing, go back to list Patients
+			if (theCommand == null) {
+				theCommand = "LIST";
+			}
+			
+			switch (theCommand) {
+			
+			case "LIST": 
+				listPatients(request, response);
+				break;
+				
+			case "LOAD":
+				loadPatient(request,response);
+				break;
+				
+			default:
+				listPatients(request, response);
+			}
+			
+		}catch (Exception exc) {
 			throw new ServletException(exc);
 		}
 		
@@ -78,18 +99,15 @@ public class PatientControllerServlet extends HttpServlet {
 			String theCommand = request.getParameter("command");
 			
 			// If the command is missing, go back to list Patients
-			if (theCommand == null) {
-				theCommand = "LIST";
-			}
 			
 			switch (theCommand) {
-			
-			case "LIST": 
-				doGet(request, response);
-				break;
-			
+				
 			case "ADD":
 				addPatient(request,response);
+				break;
+				
+			case "UPDATE":
+				loadPatient(request,response);
 				break;
 				
 			default:
@@ -100,8 +118,6 @@ public class PatientControllerServlet extends HttpServlet {
 			throw new ServletException(exc);
 		}
 	}
-
-
 
 	//listPatients --> List down all the patients queried from Database, and forward the response to list-patients.jsp
 	private void listPatients(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -161,6 +177,24 @@ public class PatientControllerServlet extends HttpServlet {
 			throw new ServletException(exc);
 		}	
 
+	}
+	
+	//updatePatients --> Load Patient in a JSP file, and update the details
+	private void loadPatient(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// Read Patient ID into Form Data
+		String thePatientId = request.getParameter("patientId");
+		
+		// Get patient from Database (DB Util)
+		Patient thePatient = patientDbUtil.getPatient(thePatientId);
+		
+		// Place Patient in the Request Attribute
+		request.setAttribute("THE_PATIENT", thePatient);
+		
+		// Send to JSP page: update-patient-form.jsp
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/update-patient-form.jsp");
+		dispatcher.forward(request, response);
+		
 	}
 
 }
