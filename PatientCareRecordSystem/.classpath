@@ -13,5 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Users/admin/Desktop/Bob/runtime/apache-tomcat-9.0.62/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/Desktop/Bob/runtime/apache-tomcat-9.0.62/lib/annotations-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

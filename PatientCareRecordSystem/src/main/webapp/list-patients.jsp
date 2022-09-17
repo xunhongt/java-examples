@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
-<%@ page import="java.util.Date, java.util.*, controllers.*, models.*, database.*" %>
 <html>
 <head>
 	<title>LIST OF PATIENTS</title>
@@ -8,13 +8,6 @@
 	<!--  LINK TO CSS FILE -->
 	<link type="text/css" rel="stylesheet" href="css/style.css">
 </head>
-
-<%
-	// Get List of Students from the Request Object (sent by servlet)
-	// Downcast the object to List<Patient>, and get Attribute for the Request
-	
-	List<Patient> thePatients = (List<Patient>) request.getAttribute("PATIENT_LIST");
-%>
 
 
 <body>
@@ -47,20 +40,25 @@
 					<th>Height (M)</th>	
 					<th>Weight (KG)</th>	
 					<th>Address</th>	
-					<th>Blood Group</th>																												
+					<th>Blood Group</th>
+					<th>Action</th>																															
 				</tr>
-					<% for (Patient tempPatient : thePatients) { %>				
-				<tr>
-					<td><%= tempPatient.getNric() %></td>
-					<td><%= tempPatient.getName() %></td>
-					<td><%= tempPatient.getGender() %></td>
-					<td><%= tempPatient.getDateOfBirth() %></td>
-					<td><%= tempPatient.getHeight() %></td>
-					<td><%= tempPatient.getWeight() %></td>
-					<td><%= tempPatient.getAddress() %></td>
-					<td><%= tempPatient.getBloodGroup() %></td>																																				
-				</tr>
-					<% } %>
+		
+				<c:forEach var="tempPatient" items="${PATIENT_LIST}">
+					
+					<tr>	
+						<td>${tempPatient.nric}</td>
+						<td>${tempPatient.name}</td>
+						<td>${tempPatient.gender}</td>
+						<td>${tempPatient.dateOfBirth}</td>
+						<td>${tempPatient.height}</td>
+						<td>${tempPatient.weight}</td>
+						<td>${tempPatient.address}</td>
+						<td>${tempPatient.bloodGroup}</td>
+					</tr>
+					
+				</c:forEach>																										
+
 			</table>
 		</div>
 	</div>
