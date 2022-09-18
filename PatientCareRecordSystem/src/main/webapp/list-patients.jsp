@@ -45,11 +45,17 @@
 		
 				<c:forEach var="tempPatient" items="${PATIENT_LIST}">
 				
-					<!-- Set an Action Link for each patient -->	
+					<!-- Set an Update Link for each patient -->	
 					<c:url var="updateLink" value="PatientControllerServlet">
 						<c:param name="command" value="LOAD" />
 						<c:param name="patientId" value="${tempPatient.nric}" />
 					</c:url>
+					<!-- Set a Delete Link for each patient -->
+					<c:url var="deleteLink" value="PatientControllerServlet">
+						<c:param name="command" value="DELETE" />
+						<c:param name="patientId" value="${tempPatient.nric}" />
+					</c:url>
+					
 					<tr>	
 						<td>${tempPatient.nric}</td>
 						<td>${tempPatient.name}</td>
@@ -59,8 +65,14 @@
 						<td>${tempPatient.weight}</td>
 						<td>${tempPatient.address}</td>
 						<td>${tempPatient.bloodGroup}</td>
-				
-						<td><a href="${updateLink}">Update</a></td>						
+						<td>
+					<!-- Input Javascript code to prompt user if they want to delete the patient -->						
+							<a href="${updateLink}">Update</a>
+							 | 
+							<a href="${deleteLink}"
+							onclick="if (!(confirm('Are you sure you want to delete this Patient?'))) return false">
+							Delete</a>
+						</td>						
 					</tr>
 					
 				</c:forEach>																										

@@ -77,6 +77,10 @@ public class PatientControllerServlet extends HttpServlet {
 				loadPatient(request,response);
 				break;
 				
+			case "DELETE":
+				deletePatient(request,response);
+				break;	
+				
 			default:
 				listPatients(request, response);
 			}
@@ -91,6 +95,7 @@ public class PatientControllerServlet extends HttpServlet {
 	/*
 	 * Main POST Method: Contains the following Helper Methods
 	 * 	- addPatients
+	 *  - updatePatient
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -227,6 +232,18 @@ public class PatientControllerServlet extends HttpServlet {
 		
 		// perform update on database
 		patientDbUtil.updatePatient(thePatient);
+		
+		// send them back to the "list patients" page
+		listPatients(request,response);
+	}
+
+	//deletePatient --> Delete Patient from the Database
+	private void deletePatient(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// Read Patient ID into Form Data
+		String thePatientId = request.getParameter("patientId");
+		
+		// Delete Patient from Database
+		patientDbUtil.deletePatient(thePatientId);
 		
 		// send them back to the "list patients" page
 		listPatients(request,response);

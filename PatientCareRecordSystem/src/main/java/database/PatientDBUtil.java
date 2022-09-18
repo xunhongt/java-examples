@@ -224,9 +224,36 @@ public class PatientDBUtil {
 			//Clean Up JDBC Objects
 			close(myConn, myStatement, null);
 		}
-
+	}
+	
+	//Method to Delete Patient from Database
+	public void deletePatient(String thePatientId) throws Exception{
 		
-
+		Connection myConn = null;
+		PreparedStatement myStatement = null;
+		
+		try {
+			// GET DATABASE connection
+			myConn = dataSource.getConnection();
+			
+			// Create SQL DELETE statement
+			String sql = "DELETE FROM patients "
+					+ "WHERE nric=?";
+			
+			// Prepare the statement
+			myStatement = myConn.prepareStatement(sql);
+			
+			// Set parameters for the statement 
+			myStatement.setString(1, thePatientId);			
+			
+			// Execute SQL Statement 
+			myStatement.execute();
+			
+		} finally {
+			// Close Connection 
+			//Clean Up JDBC Objects
+			close(myConn, myStatement, null);
+		}
 	}
 	
 	//Method to Close Connection
